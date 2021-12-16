@@ -1,0 +1,160 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service1
+  labels:
+    app: service1
+spec:
+  ports:
+  - port: 80
+    name: http
+    protocol: TCP
+    targetPort: 9000
+  - port: 443
+    name: https
+    protocol: TCP
+    targetPort: 9000
+  selector:
+    app: service1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service1
+  labels:
+    app: service1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service1
+  template:
+    metadata:
+      labels:
+        app: service1
+    spec:
+      containers:
+      - name: service1
+        image: gcr.io/anthos-book-322415/service1:latest
+        resources:
+          requests:
+            cpu: "100m"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service2
+  labels:
+    app: service2
+spec:
+  ports:
+  - port: 80
+    name: http
+    protocol: TCP
+    targetPort: 9000
+  - port: 443
+    name: https
+    protocol: TCP
+    targetPort: 9000
+  selector:
+    app: service2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service2-v1
+  labels:
+    app: service2-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service2
+  template:
+    metadata:
+      labels:
+        app: service2
+    spec:
+      containers:
+      - name: service2
+        image: gcr.io/anthos-book-322415/service2:v1
+        resources:
+          requests:
+            cpu: "100m"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service2-v2
+  labels:
+    app: service2-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service2
+  template:
+    metadata:
+      labels:
+        app: service2
+    spec:
+      containers:
+      - name: service2-v2
+        image: gcr.io/anthos-book-322415/service2:v2
+        resources:
+          requests:
+            cpu: "100m"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service3
+  labels:
+    app: service3
+spec:
+  ports:
+  - port: 80
+    name: http
+    protocol: TCP
+    targetPort: 9000
+  - port: 443
+    name: https
+    protocol: TCP
+    targetPort: 9000
+  selector:
+    app: service3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service3
+  labels:
+    app: service3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service3
+  template:
+    metadata:
+      labels:
+        app: service3
+    spec:
+      containers:
+      - name: service3
+        image: gcr.io/anthos-book-322415/service3:latest
+        resources:
+          requests:
+            cpu: "100m"
+        imagePullPolicy: #IfNotPresent Always
+        ports:
+        - containerPort: 9000
